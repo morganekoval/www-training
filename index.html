@@ -112,6 +112,7 @@ function setScoreText() {
 }
 
 
+var sleeptime = 3000;
 inputs.addEventListener("submit", function (e) {
     e.preventDefault();
     const correction = country_data[countries.pop()].capital;
@@ -120,8 +121,10 @@ inputs.addEventListener("submit", function (e) {
     if (resp) {
       score +=1;
       cls = "correct";
+      sleeptime=500;
     } else {
       cls = "incorrect";
+      sleeptime=3000;
     }
     setAnswerField(correction,cls);
     setTimeout(function(){
@@ -131,7 +134,7 @@ inputs.addEventListener("submit", function (e) {
       } else {
         setScoreText()
       }
-    },3000);
+    },sleeptime);
       
 
   });
