@@ -18,6 +18,7 @@
   <h1>Ceci est un test</h1>
   <div id="quizz">
     <div id="flag-holder">
+      <input id="numberquiz" type="number" value="10">
       <button onclick="startQuiz()">Commencer</button>
     </div>
     <form id="inputs" hidden>
@@ -34,13 +35,26 @@
 
 <script type="text/javascript">
 
-
+function randomOrder() {
+  var num_tab = [];
+  for (var i = 0; i < country_data.length; i++) {
+    num_tab.push(i);
+  }
+  for (var i = num_tab.length-1 ; i > 0 ; i--) {
+    const rdm = Math.floor(Math.random() * (i + 1));
+    const tmp = num_tab[i];
+    num_tab[i] = num_tab[rdm];
+    num_tab[rdm] = tmp;
+  }
+  return num_tab;
+}
 
 function getRandomCountryNumber(except = []) {
   var res = Math.floor(Math.random() * (country_data.length - 1) +1);
   while (res in except) {
     res = Math.floor(Math.random() * (country_data.length - 1) +1);
   }
+  console.log(except);
   return res;
 }
 
@@ -49,14 +63,23 @@ function changeFlag(num) {
 }
 
 var score = 0;
-var r_country_num = 0;
-var previous_countries = [];
 var quiz_length = 10;
+var countries = [];
 
 function startQuiz() {
+  console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
-  r_country_num = getRandomCountryNumber();
-  changeFlag(r_country_num);
+  var input_number = $("#numberquiz").val();
+  console.log(input_number);
+  if (input_number == undefined || input_number == 0) {
+    input_number = 1;
+  } else if (input_number > country_data.length) {
+    input_number = country_data.length;
+  }
+  quiz_length = input_number;
+  console.log(quiz_length);
+  countries = randomOrder().slice(0,quiz_length);
+  changeFlag(countries[countries.length-1]);
 }
 
 // distance de Levenshtein ?
@@ -91,7 +114,7 @@ function setScoreText() {
 
 inputs.addEventListener("submit", function (e) {
     e.preventDefault();
-    const correction = country_data[r_country_num].capital;
+    const correction = country_data[countries.pop()].capital;
     const resp = checkAnswer($("#answer").val(),correction);
     var cls;
     if (resp) {
@@ -102,10 +125,8 @@ inputs.addEventListener("submit", function (e) {
     }
     setAnswerField(correction,cls);
     setTimeout(function(){
-      if (previous_countries.length < quiz_length-1) {
-        previous_countries.push(r_country_num);
-        r_country_num = getRandomCountryNumber();
-        changeFlag(r_country_num);
+      if (countries.length != 0) {
+        changeFlag(countries[countries.length-1]);
         setAnswerField("","regularanswer");
       } else {
         setScoreText()
