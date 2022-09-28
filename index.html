@@ -134,6 +134,7 @@ inputs.addEventListener("submit", function (e) {
       if (countries.length != 0) {
         changeFlag(countries[countries.length-1]);
         setAnswerField("","regularanswer");
+        $("#answer").focus();
       } else {
         setScoreText()
       }
