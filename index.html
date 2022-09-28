@@ -83,18 +83,21 @@ function startQuiz() {
 }
 
 // distance de Levenshtein ?
-function levenshtein(a,b) {
+function levenshtein(a,b,res=0) {
+  if (res > 2) {
+    return res;
+  }
   if (Math.min(a.length,b.length) == 0) {
     return Math.max(a.length,b.length);
   } else if (a.charAt(0) == b.charAt(0)) {
-    return levenshtein(a.slice(1),b.slice(1));
+    return levenshtein(a.slice(1),b.slice(1),res);
   } else {
-    return 1 + Math.min(levenshtein(a.slice(1),b),levenshtein(a,b.slice(1)),levenshtein(a.slice(1),b.slice(1)));
+    return 1 + Math.min(levenshtein(a.slice(1),b,res+1),levenshtein(a,b.slice(1),res+1),levenshtein(a.slice(1),b.slice(1),res+1));
   }
 }
 
 function checkAnswer(answer,correction) {
-  //return (levenshtein(answer.toLowerCase(),correction.toLowerCase()) <= 2);
+  // return (levenshtein(answer.toLowerCase(),correction.toLowerCase()) <= 2);
   const res = levenshtein(answer.toLowerCase(),correction.toLowerCase());
   console.log(res);
   if (res > 2) {
