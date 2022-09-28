@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title></title>
+
+  <!-- Loads all styles -->
+  <link rel="stylesheet" href="style/main.css">
+
+  <!-- Loads all libraries -->
+  <script src="lib/jquery-3.3.1.min.js"></script>
+  <script src="resources/country-data.js"></script>
+</head>
+<body>
+
+  <h1>Ceci est un test</h1>
+  <div id="quizz">
+    <div id="flag-holder">
+      <button onclick="startQuiz()">Commencer</button>
+    </div>
+    <form id="inputs" hidden>
+      <span id="answer-holder">
+        <input type="text" id="answer" name="answer" minlength="0" maxlength="35" size="35" class="regularanswer">
+     </span>
+       <input type="submit" value="Valider">
+    </form>
+  </div>
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+
+function getRandomCountryNumber(except = []) {
+  var res = Math.floor(Math.random() * (country_data.length - 1) +1);
+  while (res in except) {
+    res = Math.floor(Math.random() * (country_data.length - 1) +1);
+  }
+  return res;
+}
+
+function changeFlag(num) {
+  $("div#flag-holder").html("<img id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+}
+
+var score = 0;
+var r_country_num = 0;
+var previous_countries = [];
+var quiz_length = 10;
+
+function startQuiz() {
+  document.getElementById("inputs").hidden = false;
+  r_country_num = getRandomCountryNumber();
+  changeFlag(r_country_num);
+}
+
+// distance de Levenshtein ?
+function levenshtein(a,b) {
+  if (Math.min(a.length,b.length) == 0) {
+    return Math.max(a.length,b.length);
+  } else if (a.charAt(0) == b.charAt(0)) {
+    return levenshtein(a.slice(1),b.slice(1));
+  } else {
+    return 1 + Math.min(levenshtein(a.slice(1),b),levenshtein(a,b.slice(1)),levenshtein(a.slice(1),b.slice(1)));
+  }
+}
+
+function checkAnswer(answer,correction) {
+  //return (levenshtein(answer.toLowerCase(),correction.toLowerCase()) <= 2);
+  const res = levenshtein(answer.toLowerCase(),correction.toLowerCase());
+  console.log(res);
+  if (res > 2) {
+    return false;
+  }
+  return true;
+}
+
+function setAnswerField(val,cls) {
+  $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\">");
+}
+
+function setScoreText() {
+  $("span#answer-holder").html("Score : "+score+"/"+quiz_length);
+}
+
+
+inputs.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const correction = country_data[r_country_num].capital;
+    const resp = checkAnswer($("#answer").val(),correction);
+    var cls;
+    if (resp) {
+      score +=1;
+      cls = "correct";
+    } else {
+      cls = "incorrect";
+    }
+    setAnswerField(correction,cls);
+    setTimeout(function(){
+      if (previous_countries.length < quiz_length-1) {
+        previous_countries.push(r_country_num);
+        r_country_num = getRandomCountryNumber();
+        changeFlag(r_country_num);
+        setAnswerField("","regularanswer");
+      } else {
+        setScoreText()
+      }
+    },3000);
+      
+
+  });
+
+$(window).on('load', function () {
+  // var r_country_num = getRandomCountryNumber();
+  // changeFlag(r_country_num);
+  // console.log(country_data[r_country_num].imgurl);
+  
+
+});
+
+
+
+
+</script>

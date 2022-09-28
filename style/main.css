@@ -1,0 +1,25 @@
+body {
+	background-color: white;
+	color: black;
+}
+
+h1 {
+	font-size: 100wp;
+	color: pink;
+}
+
+#flag-img {
+	height: 60vh;
+}
+
+.correct {
+	color: green;
+}
+
+.incorrect {
+	color: red;
+}
+
+.regularanswer {
+	color: black;
+}
