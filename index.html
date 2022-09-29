@@ -17,6 +17,7 @@
 
   <h1>Ceci est un test</h1>
   <div id="quizz">
+    <div id="progress" hidden><!-- <div id="inside-progress"></div><div id="inside-progress2"></div> --></div>
     <div id="flag-holder">
       <input id="numberquiz" type="number" value="10">
       <button onclick="startQuiz()">Commencer</button>
@@ -49,13 +50,12 @@ function randomOrder() {
   return num_tab;
 }
 
-function getRandomCountryNumber(except = []) {
-  var res = Math.floor(Math.random() * (country_data.length - 1) +1);
-  while (res in except) {
-    res = Math.floor(Math.random() * (country_data.length - 1) +1);
+function setProgress(correct) {
+  if (correct) {
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
+  } else {
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
   }
-  console.log(except);
-  return res;
 }
 
 function changeFlag(num) {
@@ -71,6 +71,7 @@ function startQuiz() {
   console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
   document.getElementById("submit").hidden = false;
+  document.getElementById("progress").hidden = false;
   setAnswerField("","regularanswer");
   var input_number = $("#numberquiz").val();
   console.log(input_number);
@@ -128,6 +129,8 @@ function setScoreText() {
 function endGame() {
   $("#flag-holder").html("<input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button>");
   document.getElementById("submit").hidden = true;
+  document.getElementById("progress").innerHTML = "";
+  document.getElementById("progress").hidden = true;
 }
 
 
@@ -150,8 +153,10 @@ inputs.addEventListener("submit", function (e) {
       score +=1;
       cls = "correct";
       sleeptime=500;
+      setProgress(resp);
     } else {
       cls = "incorrect";
+      setProgress(resp);
     }
     setAnswerField(correction,cls);
     setTimeout(function(){

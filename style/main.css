@@ -10,9 +10,33 @@ h1 {
 	color: pink;
 }
 
+#quiz {
+	width: 50vw;
+}
+
+#progress {
+	background-color: grey;
+	min-width: 65%;
+	width:  50vw;
+	height: 4vh;
+	margin-bottom: 2px;
+}
+#inside-progress {
+	display: inline-block;
+	background-color: green;
+	width: 10vw;
+	height: 4vh;
+}
+#inside-progress2 {
+	display: inline-block;
+	background-color: red;
+	width: 10vw;
+	height: 4vh;
+}
+
 #flag-img {
+	max-width: 65%;
 	max-height: 60vh;
-	max-width: 50vw;
 }
 
 #answer {
