@@ -65,11 +65,13 @@ function changeFlag(num) {
 var score = 0;
 var quiz_length = 10;
 var countries = [];
+var incorrect_countries = [];
 var elapsed_time = 0;
 
 function startQuiz() {
   document.getElementById("progress").innerHTML = "";
   score = 0;
+  incorrect_countries = [];
   console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
   document.getElementById("submit").hidden = false;
@@ -132,53 +134,60 @@ function elapsedTimeMinutes(tm) {
   return min+" min "+sec+" s";
 }
 
-// function setScoreText() {
-//   $("span#answer-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time));
-// }
+function showCorrection() {
+  $("span#answer-holder").html("");
+  incorrect_countries.forEach(function(country){
+    var country_info = country_data[country];
+    document.getElementById("answer-holder").innerHTML += "<div><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"> <span class=\"incorrect\">"+country_info.capital+"</span></div>";
+  });
+}
 
 function endGame() {
   $("#flag-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"<br/><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button>");
-  $("span#answer-holder").html("");
+  showCorrection();
   document.getElementById("submit").hidden = true;
+  console.log(incorrect_countries);
 }
 
 
 
 function nextFlag() {
   document.getElementById("submit").disabled = true;
-    var correction = country_data[countries.pop()].capital;
-    var resp;
-    if (correction.includes("(")) {
-      const correction2 = removeBetweenParentheses(correction);
-      console.log(correction2);
-      correction = removeParentheses(correction)
-      console.log(correction);
-      resp = (checkAnswer($("#answer").val(),correction) || checkAnswer($("#answer").val(),correction2));
+  var country = countries.pop();
+  var correction = country_data[country].capital;
+  var resp;
+  if (correction.includes("(")) {
+    const correction2 = removeBetweenParentheses(correction);
+    console.log(correction2);
+    correction = removeParentheses(correction)
+    console.log(correction);
+    resp = (checkAnswer($("#answer").val(),correction) || checkAnswer($("#answer").val(),correction2));
+  } else {
+    resp = checkAnswer($("#answer").val(),correction);
+  }
+  var cls;
+  var sleeptime = 2500;
+  if (resp) {
+    score +=1;
+    cls = "correct";
+    sleeptime=500;
+    setProgress(resp);
+  } else {
+    cls = "incorrect";
+    setProgress(resp);
+    incorrect_countries.push(country);
+  }
+  setAnswerField(correction,cls);
+  setTimeout(function(){
+    if (countries.length != 0) {
+      changeFlag(countries[countries.length-1]);
+      setAnswerField("","regularanswer");
+      $("#answer").focus();
     } else {
-      resp = checkAnswer($("#answer").val(),correction);
+      endGame();
     }
-    var cls;
-    var sleeptime = 2500;
-    if (resp) {
-      score +=1;
-      cls = "correct";
-      sleeptime=500;
-      setProgress(resp);
-    } else {
-      cls = "incorrect";
-      setProgress(resp);
-    }
-    setAnswerField(correction,cls);
-    setTimeout(function(){
-      if (countries.length != 0) {
-        changeFlag(countries[countries.length-1]);
-        setAnswerField("","regularanswer");
-        $("#answer").focus();
-      } else {
-        endGame();
-      }
-      document.getElementById("submit").disabled = false;
-    },sleeptime);
+    document.getElementById("submit").disabled = false;
+  },sleeptime);
 
 }
 

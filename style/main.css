@@ -19,7 +19,7 @@ h1 {
 	width: 50vw;
 	height: 95vh;
 	padding: 15px;
-	overflow: hidden;
+	overflow: scroll;
 }
 
 #progress {
@@ -28,17 +28,9 @@ h1 {
 	height: 4vh;
 	margin-bottom: 2px;
 }
-#inside-progress {
-	display: inline-block;
-	background-color: green;
-	width: 10vw;
-	height: 4vh;
-}
-#inside-progress2 {
-	display: inline-block;
-	background-color: red;
-	width: 10vw;
-	height: 4vh;
+
+#answer-holder {
+	margin-top: 2px;
 }
 
 #flag-img {
@@ -46,8 +38,16 @@ h1 {
 	max-height: 60vh;
 }
 
+#flag-img-corr {
+	height: 4vh;
+}
+
 #answer {
-	width: 50vw;
+	width: 43vw;
+}
+#submit {
+	min-width: 5vw;
+
 }
 
 .correct {
