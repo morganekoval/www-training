@@ -143,8 +143,9 @@ function endGame() {
 }
 
 
-inputs.addEventListener("submit", function (e) {
-    e.preventDefault();
+
+function nextFlag() {
+  document.getElementById("submit").disabled = true;
     var correction = country_data[countries.pop()].capital;
     var resp;
     if (correction.includes("(")) {
@@ -157,7 +158,7 @@ inputs.addEventListener("submit", function (e) {
       resp = checkAnswer($("#answer").val(),correction);
     }
     var cls;
-    var sleeptime = 3000;
+    var sleeptime = 2500;
     if (resp) {
       score +=1;
       cls = "correct";
@@ -177,10 +178,16 @@ inputs.addEventListener("submit", function (e) {
         setScoreText();
         endGame();
       }
+      document.getElementById("submit").disabled = false;
     },sleeptime);
-      
 
-  });
+}
+
+
+inputs.addEventListener("submit", function (e) {
+  e.preventDefault();
+  nextFlag();
+});
 
 $(window).on('load', function () {
   // var r_country_num = getRandomCountryNumber();
