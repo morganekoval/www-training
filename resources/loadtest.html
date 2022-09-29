@@ -112,10 +112,11 @@ function equals(a,b) {
     var res = $.csv.toArrays(reader.result);
     var S = "const country_data = [";
     for (var i = 1; i < res.length; i++) {
-      S+= "{name:\""+res[i][0]+"\",";
-      S+= "capital:\""+res[i][1]+"\",";
-      S+= "filename:\""+res[i][2]+"\",";
-      S+= "imgurl:\""+res[i][3]+"\"}";
+      S+= "{name:\""+res[i][1]+"\",";
+      S+= "ISO:\""+res[i][0]+"\",";
+      S+= "capital:\""+res[i][2]+"\",";
+      S+= "filename:\""+res[i][3]+"\",";
+      S+= "imgurl:\""+res[i][4]+"\"}";
       if (i < res.length -1) {
         S+=",";
       }

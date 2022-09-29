@@ -96,6 +96,14 @@ function levenshtein(a,b,res=0) {
   }
 }
 
+function removeParentheses(str) {
+  return str.replace("(","").replace(")","");
+}
+
+function removeBetweenParentheses(str) {
+  return str.replace(/\(.+[^)]\)/,"");
+}
+
 function checkAnswer(answer,correction) {
   // return (levenshtein(answer.toLowerCase(),correction.toLowerCase()) <= 2);
   const res = levenshtein(answer.toLowerCase(),correction.toLowerCase());
@@ -118,8 +126,17 @@ function setScoreText() {
 var sleeptime = 3000;
 inputs.addEventListener("submit", function (e) {
     e.preventDefault();
-    const correction = country_data[countries.pop()].capital;
-    const resp = checkAnswer($("#answer").val(),correction);
+    var correction = country_data[countries.pop()].capital;
+    var resp;
+    if (correction.includes("(")) {
+      const correction2 = removeBetweenParentheses(correction);
+      console.log(correction2);
+      correction = removeParentheses(correction)
+      console.log(correction);
+      resp = (checkAnswer($("#answer").val(),correction) || checkAnswer($("#answer").val(),correction2));
+    } else {
+      resp = checkAnswer($("#answer").val(),correction);
+    }
     var cls;
     if (resp) {
       score +=1;
