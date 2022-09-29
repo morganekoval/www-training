@@ -1,22 +1,30 @@
 body {
-	background-color: white;
+	/*background-color: white;*/
+	background-image: url("../resources/background.svg");
 	color: black;
 	margin-left: auto;
 	width: 80vw;
+	font-family: sans-serif;
 }
 
 h1 {
+	font-style:small-caps;
+	font-weight: bold;
 	font-size: 100wp;
-	color: pink;
+	color: black;
+	/*background: yellow;*/
 }
 
-#quiz {
+#quizz {
+	background-color: rgba(255, 255, 255, 0.7);
 	width: 50vw;
+	height: 95vh;
+	padding: 15px;
+	overflow: hidden;
 }
 
 #progress {
 	background-color: grey;
-	min-width: 65%;
 	width:  50vw;
 	height: 4vh;
 	margin-bottom: 2px;
