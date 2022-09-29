@@ -68,7 +68,7 @@ var countries = [];
 var elapsed_time = 0;
 
 function startQuiz() {
-  elapsed_time = Date.now();
+  document.getElementById("progress").innerHTML = "";
   score = 0;
   console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
@@ -86,6 +86,7 @@ function startQuiz() {
   console.log(quiz_length);
   countries = randomOrder().slice(0,quiz_length);
   changeFlag(countries[countries.length-1]);
+  elapsed_time = Date.now();
 }
 
 // distance de Levenshtein ?
@@ -131,15 +132,14 @@ function elapsedTimeMinutes(tm) {
   return min+" min "+sec+" s";
 }
 
-function setScoreText() {
-  $("span#answer-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time));
-}
+// function setScoreText() {
+//   $("span#answer-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time));
+// }
 
 function endGame() {
-  $("#flag-holder").html("<input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button>");
+  $("#flag-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"<br/><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button>");
+  $("span#answer-holder").html("");
   document.getElementById("submit").hidden = true;
-  document.getElementById("progress").innerHTML = "";
-  document.getElementById("progress").hidden = true;
 }
 
 
@@ -175,7 +175,6 @@ function nextFlag() {
         setAnswerField("","regularanswer");
         $("#answer").focus();
       } else {
-        setScoreText();
         endGame();
       }
       document.getElementById("submit").disabled = false;
