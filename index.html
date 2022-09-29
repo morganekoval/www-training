@@ -65,8 +65,10 @@ function changeFlag(num) {
 var score = 0;
 var quiz_length = 10;
 var countries = [];
+var elapsed_time = 0;
 
 function startQuiz() {
+  elapsed_time = Date.now();
   score = 0;
   console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
@@ -122,8 +124,15 @@ function setAnswerField(val,cls) {
   $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\">");
 }
 
+function elapsedTimeMinutes(tm) {
+  tm = tm/1000;
+  const min = Math.floor(tm/60);
+  const sec = Math.round(tm%60);
+  return min+" min "+sec+" s";
+}
+
 function setScoreText() {
-  $("span#answer-holder").html("Score : "+score+"/"+quiz_length);
+  $("span#answer-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time));
 }
 
 function endGame() {
