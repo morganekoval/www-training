@@ -61,3 +61,8 @@ h1 {
 .regularanswer {
 	color: black;
 }
+
+.indication {
+	color: grey;
+	font-style: italic;
+}
