@@ -25,7 +25,7 @@
       <span id="answer-holder">
         <input type="text" id="answer" name="answer" minlength="0" maxlength="35" class="regularanswer">
      </span>
-       <input type="submit" value="Valider">
+       <input id="submit" type="submit" value="Valider">
     </form>
   </div>
 
@@ -67,8 +67,11 @@ var quiz_length = 10;
 var countries = [];
 
 function startQuiz() {
+  score = 0;
   console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
+  document.getElementById("submit").hidden = false;
+  setAnswerField("","regularanswer");
   var input_number = $("#numberquiz").val();
   console.log(input_number);
   if (input_number == undefined || input_number == 0) {
@@ -122,8 +125,12 @@ function setScoreText() {
   $("span#answer-holder").html("Score : "+score+"/"+quiz_length);
 }
 
+function endGame() {
+  $("#flag-holder").html("<input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button>");
+  document.getElementById("submit").hidden = true;
+}
 
-var sleeptime = 3000;
+
 inputs.addEventListener("submit", function (e) {
     e.preventDefault();
     var correction = country_data[countries.pop()].capital;
@@ -138,13 +145,13 @@ inputs.addEventListener("submit", function (e) {
       resp = checkAnswer($("#answer").val(),correction);
     }
     var cls;
+    var sleeptime = 3000;
     if (resp) {
       score +=1;
       cls = "correct";
       sleeptime=500;
     } else {
       cls = "incorrect";
-      sleeptime=3000;
     }
     setAnswerField(correction,cls);
     setTimeout(function(){
@@ -153,7 +160,8 @@ inputs.addEventListener("submit", function (e) {
         setAnswerField("","regularanswer");
         $("#answer").focus();
       } else {
-        setScoreText()
+        setScoreText();
+        endGame();
       }
     },sleeptime);
       
