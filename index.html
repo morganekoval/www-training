@@ -17,7 +17,7 @@
 <body>
 
   <div id="quizz">
-    <h1>www-training</h1>
+    <h1><a id="homepage-link">www-training</a></h1>
     <div id="progress" hidden><!-- <div id="inside-progress"></div><div id="inside-progress2"></div> --></div>
     <div id="flag-holder">
       <div>
@@ -212,10 +212,12 @@ inputs.addEventListener("submit", function (e) {
   nextFlag();
 });
 
-// $(window).on('load', function () {
+$(window).on('load', function () {
+  // console.log(document.URL);
+  document.getElementById("homepage-link").href = document.URL;
   
 
-// });
+});
 
 
 

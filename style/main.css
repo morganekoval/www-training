@@ -14,6 +14,11 @@ h1 {
 	/*background: yellow;*/
 }
 
+#homepage-link {
+	text-decoration: none;
+	color: black;
+}
+
 #quizz {
 	background-color: rgba(255, 255, 255, 0.7);
 	width: 50vw;
