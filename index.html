@@ -22,6 +22,7 @@
     <div id="flag-holder">
       <div>
         <span><input type="checkbox" id="blink" name="blink"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
+        <span><input type="checkbox" id="small" name="small"> Les drapeaux sont petits</span><br/>
       <span>Nombre de capitales : </span>
       <input id="numberquiz" type="number" value="10">
       <button onclick="startQuiz()">Commencer</button>
@@ -79,8 +80,14 @@ function makeFlagBlink(num) {
 
 function changeFlag(num) {
   $("div#flag-holder").html("<img id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+  if (small) {
+    document.getElementById("flag-img").classList.add("small");
+  }
   if (blink) {
     $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+    if (small) {
+    document.getElementById("flag-img").classList.add("small");
+    } 
     setTimeout(function(){
       document.getElementById("flag-img").classList.remove("blink");
     },200);
@@ -99,6 +106,7 @@ var elapsed_time = 0;
 var timer = 0;
 var timerFunc;
 var blink = false;
+var small = false;
 
 
 function loadOptions(){
@@ -112,7 +120,7 @@ function setUpQuiz() {
   toggleElementsById(["inputs","submit","progress"],false);
   setAnswerField("","regularanswer");
   blink = document.getElementById("blink").checked;
-  console.log(blink);
+  small = document.getElementById("small").checked;
   changeFlag(countries[countries.length-1]);
   elapsed_time = Date.now();
 }

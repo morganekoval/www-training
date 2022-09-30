@@ -52,6 +52,11 @@ h1 {
 	opacity: 0;
 }
 
+.small {
+	max-width: 20px;
+	max-height: 20px;
+}
+
 #answer {
 	width: 43vw;
 }
