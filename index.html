@@ -21,6 +21,7 @@
     <div id="progress" hidden><!-- <div id="inside-progress"></div><div id="inside-progress2"></div> --></div>
     <div id="flag-holder">
       <div>
+        <span><input type="checkbox" id="blink" name="blink"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
       <span>Nombre de capitales : </span>
       <input id="numberquiz" type="number" value="10">
       <button onclick="startQuiz()">Commencer</button>
@@ -74,6 +75,11 @@ function setProgress(correct,callFromInterval) {
 
 function changeFlag(num) {
   $("div#flag-holder").html("<img id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+  if (blink) {
+    setTimeout(function(){
+      $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+    },100);
+  }
 }
 
 var score = 0;
@@ -84,6 +90,7 @@ var incorrect_log = [];
 var elapsed_time = 0;
 var timer = 0;
 var timerFunc;
+var blink = false;
 
 
 function loadOptions(){
@@ -96,6 +103,7 @@ function setUpQuiz() {
   incorrect_log = [];
   toggleElementsById(["inputs","submit","progress"],false);
   setAnswerField("","regularanswer");
+  blink = document.getElementById("blink").value;
   changeFlag(countries[countries.length-1]);
   elapsed_time = Date.now();
 }

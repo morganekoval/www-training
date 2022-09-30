@@ -48,6 +48,10 @@ h1 {
 	height: 4vh;
 }
 
+.blink {
+	opacity: 0;
+}
+
 #answer {
 	width: 43vw;
 }
