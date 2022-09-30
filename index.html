@@ -60,11 +60,15 @@ function randomOrder() {
   return num_tab;
 }
 
-function setProgress(correct) {
-  if (correct) {
-    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
-  } else {
-    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
+function setProgress(correct,callFromInterval) {
+  if (timer == 0) {
+    if (correct) {
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
+    } else {
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
+    }
+  } else if (callFromInterval) {
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/(timer/1000)+"vw;height: 4vh;\"></div>"
   }
 }
 
@@ -101,6 +105,7 @@ function startQuizTimer() {
   countries = randomOrder();
   setUpQuiz();
   timerFunc = setInterval(function(){
+    setProgress(0,true);
     if (Date.now() - elapsed_time > timer) {
       endGame();
     }
@@ -134,7 +139,7 @@ function endGame() {
   if (timer == 0) {
     $("#flag-holder").html("<div>Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button></div>");
   } else {
-    $("#flag-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"minutesquiz\" type=\"number\" value=\""+timer/60000+"\"> min <button onclick=\"startQuizTimer()\">Recommencer</button></div>");
+    $("#flag-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(timer)+"</div><div><input id=\"minutesquiz\" type=\"number\" value=\""+timer/60000+"\"> min <button onclick=\"startQuizTimer()\">Recommencer</button></div>");
   }
   showCorrection();
   toggleElementsById(["submit"],true);
@@ -147,10 +152,10 @@ function correctInput(resp,correction,country) {
     score +=1;
     cls = "correct";
     sleeptime=500;
-    setProgress(resp);
+    setProgress(resp,false);
   } else {
     cls = "incorrect";
-    setProgress(resp);
+    setProgress(resp,false);
     incorrect_log.push($("#answer").val());
     incorrect_countries.push(country);
   }
