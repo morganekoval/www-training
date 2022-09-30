@@ -12,6 +12,7 @@
   <!-- Loads all libraries -->
   <script src="lib/jquery-3.3.1.min.js"></script>
   <script src="resources/country-data.js"></script>
+  <script src="js/main-functions.js"></script>
 </head>
 <body>
 
@@ -19,8 +20,16 @@
     <h1>www-training</h1>
     <div id="progress" hidden><!-- <div id="inside-progress"></div><div id="inside-progress2"></div> --></div>
     <div id="flag-holder">
+      <div>
+      <span>Nombre de capitales : </span>
       <input id="numberquiz" type="number" value="10">
       <button onclick="startQuiz()">Commencer</button>
+    </div>
+    <div>
+      <span>Minuteur : </span>
+      <input id="minutesquiz" type="number" value="1"> min
+      <button onclick="startQuizTimer()">Commencer</button>
+    </div>
     </div>
     <form id="inputs" hidden>
       <span id="answer-holder">
@@ -40,6 +49,7 @@ function randomOrder() {
   var num_tab = [];
   for (var i = 0; i < country_data.length; i++) {
     num_tab.push(i);
+
   }
   for (var i = num_tab.length-1 ; i > 0 ; i--) {
     const rdm = Math.floor(Math.random() * (i + 1));
@@ -63,78 +73,51 @@ function changeFlag(num) {
 }
 
 var score = 0;
-var quiz_length = 10;
+var quiz_length = 198;
 var countries = [];
 var incorrect_countries = [];
 var incorrect_log = [];
 var elapsed_time = 0;
+var timer = 0;
+var timerFunc;
 
-function startQuiz() {
-  document.getElementById("progress").innerHTML = "";
+
+function loadOptions(){
+
+}
+function setUpQuiz() {
+  resetHTML(["progress"]);
   score = 0;
   incorrect_countries = [];
   incorrect_log = [];
-  console.log(country_data.length);
-  document.getElementById("inputs").hidden = false;
-  document.getElementById("submit").hidden = false;
-  document.getElementById("progress").hidden = false;
+  toggleElementsById(["inputs","submit","progress"],false);
   setAnswerField("","regularanswer");
-  var input_number = $("#numberquiz").val();
-  console.log(input_number);
-  if (input_number == undefined || input_number == 0) {
-    input_number = 1;
-  } else if (input_number > country_data.length) {
-    input_number = country_data.length;
-  }
-  quiz_length = input_number;
-  console.log(quiz_length);
-  countries = randomOrder().slice(0,quiz_length);
   changeFlag(countries[countries.length-1]);
   elapsed_time = Date.now();
 }
 
-// distance de Levenshtein ?
-function levenshtein(a,b,res=0) {
-  if (res > 2) {
-    return res;
-  }
-  if (Math.min(a.length,b.length) == 0) {
-    return Math.max(a.length,b.length);
-  } else if (a.charAt(0) == b.charAt(0)) {
-    return levenshtein(a.slice(1),b.slice(1),res);
-  } else {
-    return 1 + Math.min(levenshtein(a.slice(1),b,res+1),levenshtein(a,b.slice(1),res+1),levenshtein(a.slice(1),b.slice(1),res+1));
-  }
+function startQuizTimer() {
+  timer = getQuizInfo("minutesquiz",1,60)*1000*60;
+  countries = randomOrder();
+  setUpQuiz();
+  timerFunc = setInterval(function(){
+    if (Date.now() - elapsed_time > timer) {
+      endGame();
+    }
+  },1000);
 }
 
-function removeParentheses(str) {
-  return str.replace("(","").replace(")","");
+function startQuiz() {
+  quiz_length = getQuizInfo("numberquiz",1,country_data.length);
+  countries = randomOrder().slice(0,quiz_length);
+  setUpQuiz();
 }
 
-function removeBetweenParentheses(str) {
-  return str.replace(/\(.+[^)]\)/,"");
-}
-
-function checkAnswer(answer,correction) {
-  // return (levenshtein(answer.toLowerCase(),correction.toLowerCase()) <= 2);
-  const res = levenshtein(answer.toLowerCase(),correction.toLowerCase());
-  console.log(res);
-  if (res > 2) {
-    return false;
-  }
-  return true;
-}
 
 function setAnswerField(val,cls) {
   $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\">");
 }
 
-function elapsedTimeMinutes(tm) {
-  tm = tm/1000;
-  const min = Math.floor(tm/60);
-  const sec = Math.round(tm%60);
-  return min+" min "+sec+" s";
-}
 
 function showCorrection() {
   $("span#answer-holder").html("");
@@ -142,33 +125,22 @@ function showCorrection() {
   incorrect_log = incorrect_log.reverse();
   incorrect_countries.forEach(function(country){
     var country_info = country_data[country];
-    document.getElementById("answer-holder").innerHTML += "<div><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
+    document.getElementById("answer-holder").innerHTML += "<div class=\"spaced\"><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
   });
 }
 
 function endGame() {
-  $("#flag-holder").html("Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"<br/><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button>");
+  clearInterval(timerFunc);
+  if (timer == 0) {
+    $("#flag-holder").html("<div>Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button></div>");
+  } else {
+    $("#flag-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"minutesquiz\" type=\"number\" value=\""+timer/60000+"\"> min <button onclick=\"startQuizTimer()\">Recommencer</button></div>");
+  }
   showCorrection();
-  document.getElementById("submit").hidden = true;
-  console.log(incorrect_countries);
+  toggleElementsById(["submit"],true);
 }
 
-
-
-function nextFlag() {
-  document.getElementById("submit").disabled = true;
-  var country = countries.pop();
-  var correction = country_data[country].capital;
-  var resp;
-  if (correction.includes("(")) {
-    const correction2 = removeBetweenParentheses(correction);
-    console.log(correction2);
-    correction = removeParentheses(correction)
-    console.log(correction);
-    resp = (checkAnswer($("#answer").val(),correction) || checkAnswer($("#answer").val(),correction2));
-  } else {
-    resp = checkAnswer($("#answer").val(),correction);
-  }
+function correctInput(resp,correction,country) {
   var cls;
   var sleeptime = 2000;
   if (resp) {
@@ -193,7 +165,15 @@ function nextFlag() {
     }
     document.getElementById("submit").disabled = false;
   },sleeptime);
+}
 
+
+function nextFlag() {
+  document.getElementById("submit").disabled = true;
+  var country = countries.pop();
+  const correction = country_data[country].capital;
+  const resp = isCorrect(correction,2);
+  correctInput(resp,removeParentheses(correction),country);
 }
 
 
@@ -202,10 +182,10 @@ inputs.addEventListener("submit", function (e) {
   nextFlag();
 });
 
-$(window).on('load', function () {
+// $(window).on('load', function () {
   
 
-});
+// });
 
 
 
