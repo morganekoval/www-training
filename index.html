@@ -73,12 +73,20 @@ function setProgress(correct,callFromInterval) {
   }
 }
 
+function makeFlagBlink(num) {
+  $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+}
+
 function changeFlag(num) {
   $("div#flag-holder").html("<img id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
   if (blink) {
+    $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
     setTimeout(function(){
-      $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
-    },100);
+      document.getElementById("flag-img").classList.remove("blink");
+    },200);
+    setTimeout(function(){
+      document.getElementById("flag-img").classList.add("blink");
+    },300);
   }
 }
 

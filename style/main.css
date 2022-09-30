@@ -40,8 +40,8 @@ h1 {
 }
 
 #flag-img {
-	max-width: 65%;
-	max-height: 60vh;
+	/*max-width: 65%;*/
+	height: 40vh;
 }
 
 #flag-img-corr {
