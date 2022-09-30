@@ -103,7 +103,8 @@ function setUpQuiz() {
   incorrect_log = [];
   toggleElementsById(["inputs","submit","progress"],false);
   setAnswerField("","regularanswer");
-  blink = document.getElementById("blink").value;
+  blink = document.getElementById("blink").checked;
+  console.log(blink);
   changeFlag(countries[countries.length-1]);
   elapsed_time = Date.now();
 }
