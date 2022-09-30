@@ -66,12 +66,14 @@ var score = 0;
 var quiz_length = 10;
 var countries = [];
 var incorrect_countries = [];
+var incorrect_log = [];
 var elapsed_time = 0;
 
 function startQuiz() {
   document.getElementById("progress").innerHTML = "";
   score = 0;
   incorrect_countries = [];
+  incorrect_log = [];
   console.log(country_data.length);
   document.getElementById("inputs").hidden = false;
   document.getElementById("submit").hidden = false;
@@ -136,9 +138,11 @@ function elapsedTimeMinutes(tm) {
 
 function showCorrection() {
   $("span#answer-holder").html("");
+  console.log(incorrect_log);
+  incorrect_log = incorrect_log.reverse();
   incorrect_countries.forEach(function(country){
     var country_info = country_data[country];
-    document.getElementById("answer-holder").innerHTML += "<div><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"> <span class=\"incorrect\">"+country_info.capital+"</span><span class=\"indication\"> ("+country_info.name+")</span></div>";
+    document.getElementById("answer-holder").innerHTML += "<div><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
   });
 }
 
@@ -175,6 +179,7 @@ function nextFlag() {
   } else {
     cls = "incorrect";
     setProgress(resp);
+    incorrect_log.push($("#answer").val());
     incorrect_countries.push(country);
   }
   setAnswerField(correction,cls);
@@ -198,9 +203,6 @@ inputs.addEventListener("submit", function (e) {
 });
 
 $(window).on('load', function () {
-  // var r_country_num = getRandomCountryNumber();
-  // changeFlag(r_country_num);
-  // console.log(country_data[r_country_num].imgurl);
   
 
 });
