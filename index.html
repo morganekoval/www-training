@@ -119,8 +119,12 @@ function setUpQuiz() {
   incorrect_log = [];
   toggleElementsById(["inputs","submit","progress"],false);
   setAnswerField("","regularanswer");
-  blink = document.getElementById("blink").checked;
-  small = document.getElementById("small").checked;
+  if (document.getElementById("blink") != undefined) {
+    blink = document.getElementById("blink").checked;
+  }
+  if (document.getElementById("small") != undefined) {
+    small = document.getElementById("small").checked;
+  }
   changeFlag(countries[countries.length-1]);
   elapsed_time = Date.now();
 }
