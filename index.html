@@ -90,10 +90,10 @@ function changeFlag(num) {
     } 
     setTimeout(function(){
       document.getElementById("flag-img").classList.remove("blink");
-    },200);
+    },300);
     setTimeout(function(){
       document.getElementById("flag-img").classList.add("blink");
-    },300);
+    },400);
   }
 }
 
@@ -159,7 +159,7 @@ function showCorrection() {
   incorrect_log = incorrect_log.reverse();
   incorrect_countries.forEach(function(country){
     var country_info = country_data[country];
-    document.getElementById("answer-holder").innerHTML += "<div class=\"spaced\"><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
+    document.getElementById("answer-holder").innerHTML += "<div class=\"spaced\"><span><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"></span> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
   });
 }
 
