@@ -121,6 +121,10 @@ function changeCountry(num) {
   $("div#quizz-holder").html("<span id=\"country-name\">"+country_data[num].name+"</span>");
 }
 
+function changeCapital(num) {
+  $("div#quizz-holder").html("<span id=\"capital-name\">"+country_data[num].capital+"</span>");
+}
+
 function changeFlag(num) {
   $("div#quizz-holder").html("<img id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
   if (small) {
@@ -142,6 +146,10 @@ function changeFlag(num) {
 
 function changeCountryFlag(num) {
   $("div#quizz-holder").html("<span id=\"country-name\">"+country_data[num].name+"<img class=\"small\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\"></span>");
+}
+
+function changeCapitalFlag(num) {
+  $("div#quizz-holder").html("<span id=\"capital-name\">"+country_data[num].capital+"<img class=\"small\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\"></span>");
 }
 
 function changeISO(num) {

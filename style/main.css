@@ -83,7 +83,7 @@ h2 {
 	flex-direction: column;*/
 }
 
-#country-name, #country-ISO {
+#country-name, #country-ISO, #capital-name {
 	padding: 5px;
 	display: table;
     margin: 0 auto;
