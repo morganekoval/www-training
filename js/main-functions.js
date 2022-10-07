@@ -52,7 +52,7 @@ function getQuizInfo(input,min,max) {
 
 
 function checkAnswer(answer,correction,threshold) {
-  return (levenshtein(answer.toLowerCase(),correction.toLowerCase()) <= threshold);
+  return (levenshtein(normalizeStr(answer),normalizeStr(correction)) <= threshold);
   // const res = levenshtein(answer.toLowerCase(),correction.toLowerCase());
   // if (res > threshold) {
   //   return false;
@@ -61,11 +61,38 @@ function checkAnswer(answer,correction,threshold) {
 }
 
 function isCorrect(correction,threshold) {
+  // console.log(correction);
   if (correction.includes("(")) {
     const correction2 = removeBetweenParentheses(correction);
     correction = removeParentheses(correction)
     return (checkAnswer($("#answer").val(),correction,threshold) || checkAnswer($("#answer").val(),correction2,threshold));
   } else {
     return checkAnswer($("#answer").val(),correction,threshold);
+  }
+}
+
+function normalizeStr(str) {
+  str = str.normalize("NFC");
+  str = str.toLowerCase();
+  str = str.replaceAll(/[àäâã]/g,"a");
+  str = str.replaceAll(/[éèëê]/g,"e");
+  str = str.replaceAll(/[ïî]/g,"i");
+  str = str.replaceAll(/[öôõ]/g,"o");
+  str = str.replaceAll(/[ùüû]/g,"u");
+  str = str.replaceAll(/ÿ/g,"y");
+  str = str.replaceAll(/[\-']/g," ");
+  // console.log(str);
+  return str;
+}
+
+function setProgress(correct,callFromInterval) {
+  if (timer == 0) {
+    if (correct) {
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/quiz_length+"vw;height: 3vh;margin-bottom: 3px;\"></div>"
+    } else {
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+50/quiz_length+"vw;height: 3vh;margin-bottom: 3px;\"></div>"
+    }
+  } else if (callFromInterval) {
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/(timer/1000)+"vw;height: 3vh;margin-bottom: 3px;\"></div>"
   }
 }

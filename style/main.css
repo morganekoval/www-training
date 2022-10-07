@@ -7,11 +7,26 @@ body {
 	font-family: sans-serif;
 }
 
+.header{
+	/*background-color: orange;*/
+
+}
+
 h1 {
 	font-weight: bold;
-	font-size: 100wp;
+	font-size: 35px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+h2 {
+	margin-top: 0px;
+	font-size: 20px;
+}
+
+.header a {
+	text-decoration: none;
 	color: black;
-	/*background: yellow;*/
 }
 
 #homepage-link {
@@ -19,7 +34,7 @@ h1 {
 	color: black;
 }
 
-#quizz {
+.body-quizz {
 	background-color: rgba(255, 255, 255, 0.7);
 	width: 50vw;
 	height: 95vh;
@@ -27,21 +42,52 @@ h1 {
 	overflow: scroll;
 }
 
+#links {
+	display: flex;
+	flex-direction: column;
+	/*justify-content: space-between;*/
+	/*align-content: center;*/
+}
+
+.link-quizz a{
+	text-decoration: none;
+	font-weight: bold;
+	color: black;
+}
+
+.link-quizz {
+	border: none;
+	padding: 5px;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.link-quizz a:hover {
+	color: red;
+}
+
+
 #progress {
 	background-color: grey;
 	width:  50vw;
-	height: 4vh;
-	margin-bottom: 2px;
+	height: 3vh;
+	margin-bottom: 3px;
 }
 
 #answer-holder {
 	margin-top: 2px;
 }
 
-#flag-holder {
+#quizz-holder {
 /*	display: flex;
 	justify-content: center;
 	flex-direction: column;*/
+}
+
+#country-name, #country-ISO {
+	padding: 5px;
+	display: table;
+    margin: 0 auto;
+    font-weight: bold;
 }
 
 #flag-img {

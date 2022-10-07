@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>wwww-training</title>
+  <!-- Loads all styles -->
+  <link rel="stylesheet" href="style/main.css">
+  <link rel="icon" href="resources/icon.png">
+
+  <!-- Loads all libraries -->
+  <script src="lib/jquery-3.3.1.min.js"></script>
+  <script src="resources/country-data.js"></script>
+  <script src="js/main-functions.js"></script>
+</head>
+<body>
+
+  <div class="body-quizz" id="quizz">
+    <h1><a id="homepage-link">www-training</a></h1>
+    <h2>Pays</h2>
+    <div id="progress" hidden><!-- <div id="inside-progress"></div><div id="inside-progress2"></div> --></div>
+    <div id="flag-holder">
+      <div>
+        <span><input type="checkbox" id="blink" name="blink"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
+        <span><input type="checkbox" id="small" name="small"> Les drapeaux sont petits</span><br/>
+      <span>Nombre de capitales : </span>
+      <input id="numberquiz" type="number" value="10">
+      <button onclick="startQuiz()">Commencer</button>
+    </div>
+    <div>
+      <span>Minuteur : </span>
+      <input id="minutesquiz" type="number" value="1"> min
+      <button onclick="startQuizTimer()">Commencer</button>
+    </div>
+    </div>
+    <form id="inputs" hidden>
+      <span id="answer-holder">
+        <input type="text" id="answer" name="answer" minlength="0" maxlength="35" class="regularanswer">
+     </span>
+       <input id="submit" type="submit" value="Valider">
+    </form>
+  </div>
+
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+function randomOrder() {
+  var num_tab = [];
+  for (var i = 0; i < country_data.length; i++) {
+    num_tab.push(i);
+    // num_tab.push(5); // saint john's
+
+  }
+  for (var i = num_tab.length-1 ; i > 0 ; i--) {
+    const rdm = Math.floor(Math.random() * (i + 1));
+    const tmp = num_tab[i];
+    num_tab[i] = num_tab[rdm];
+    num_tab[rdm] = tmp;
+  }
+  return num_tab;
+}
+
+function setProgress(correct,callFromInterval) {
+  if (timer == 0) {
+    if (correct) {
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
+    } else {
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+50/quiz_length+"vw;height: 4vh;\"></div>"
+    }
+  } else if (callFromInterval) {
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/(timer/1000)+"vw;height: 4vh;\"></div>"
+  }
+}
+
+function makeFlagBlink(num) {
+  $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+}
+
+function changeFlag(num) {
+  $("div#flag-holder").html("<img id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+  if (small) {
+    document.getElementById("flag-img").classList.add("small");
+  }
+  if (blink) {
+    $("div#flag-holder").html("<img class=\"blink\" id=\"flag-img\" src=\""+country_data[num].imgurl+"\" alt=\""+country_data[num].filename+"\">");
+    if (small) {
+    document.getElementById("flag-img").classList.add("small");
+    } 
+    setTimeout(function(){
+      document.getElementById("flag-img").classList.remove("blink");
+    },300);
+    setTimeout(function(){
+      document.getElementById("flag-img").classList.add("blink");
+    },400);
+  }
+}
+
+var score = 0;
+var quiz_length = 198;
+var countries = [];
+var incorrect_countries = [];
+var incorrect_log = [];
+var elapsed_time = 0;
+var timer = 0;
+var timerFunc;
+var blink = false;
+var small = false;
+
+var mode = 0;
+
+
+function loadOptions(){
+
+}
+
+
+function setUpQuiz() {
+  resetHTML(["progress"]);
+  score = 0;
+  incorrect_countries = [];
+  incorrect_log = [];
+  toggleElementsById(["inputs","submit","progress"],false);
+  setAnswerField("","regularanswer");
+  if (document.getElementById("blink") != undefined) {
+    blink = document.getElementById("blink").checked;
+  }
+  if (document.getElementById("small") != undefined) {
+    small = document.getElementById("small").checked;
+  }
+  changeFlag(countries[countries.length-1]);
+  elapsed_time = Date.now();
+}
+
+function startQuizTimer() {
+  timer = getQuizInfo("minutesquiz",1,60)*1000*60;
+  countries = randomOrder();
+  setUpQuiz();
+  timerFunc = setInterval(function(){
+    setProgress(0,true);
+    if (Date.now() - elapsed_time > timer) {
+      endGame();
+    }
+  },1000);
+}
+
+function startQuiz() {
+  quiz_length = getQuizInfo("numberquiz",1,country_data.length);
+  countries = randomOrder().slice(0,quiz_length);
+  setUpQuiz();
+}
+
+
+function setAnswerField(val,cls) {
+  $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\">");
+}
+
+
+function showCorrection() {
+  $("span#answer-holder").html("");
+  console.log(incorrect_log);
+  incorrect_log = incorrect_log.reverse();
+  incorrect_countries.forEach(function(country){
+    var country_info = country_data[country];
+    document.getElementById("answer-holder").innerHTML += "<div class=\"spaced\"><span><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"></span> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
+  });
+}
+
+function endGame() {
+  clearInterval(timerFunc);
+  if (timer == 0) {
+    $("#flag-holder").html("<div>Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button></div>");
+  } else {
+    $("#flag-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(Math.min(timer,Date.now()-elapsed_time))+"</div><div><input id=\"minutesquiz\" type=\"number\" value=\""+timer/60000+"\"> min <button onclick=\"startQuizTimer()\">Recommencer</button></div>");
+  }
+  showCorrection();
+  toggleElementsById(["submit"],true);
+}
+
+function correctInput(resp,correction,country) {
+  var cls;
+  var sleeptime = 2000;
+  if (resp) {
+    score +=1;
+    cls = "correct";
+    sleeptime=500;
+    setProgress(resp,false);
+  } else {
+    cls = "incorrect";
+    setProgress(resp,false);
+    incorrect_log.push($("#answer").val());
+    incorrect_countries.push(country);
+  }
+  setAnswerField(correction,cls);
+  setTimeout(function(){
+    if (countries.length != 0) {
+      changeFlag(countries[countries.length-1]);
+      setAnswerField("","regularanswer");
+      $("#answer").focus();
+    } else {
+      endGame();
+    }
+    document.getElementById("submit").disabled = false;
+  },sleeptime);
+}
+
+
+function nextFlag() {
+  document.getElementById("submit").disabled = true;
+  var country = countries.pop();
+  const correction = country_data[country].capital;
+  const resp = isCorrect(correction.normalize('NFKD'),2);
+  correctInput(resp,removeParentheses(correction),country);
+}
+
+
+inputs.addEventListener("submit", function (e) {
+  e.preventDefault();
+  nextFlag();
+});
+
+$(window).on('load', function () {
+  // console.log(document.URL);
+  var index = "";
+  if (document.URL.includes("Users") || document.URL.includes("Utilisateurs")) {
+    index = "index.html";
+  }
+  document.getElementById("homepage-link").href = document.URL.replace("pays.html",index);
+  
+
+});
+
+
+
+
+</script>
