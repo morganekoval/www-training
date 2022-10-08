@@ -187,6 +187,7 @@ function setAnswerField(val,cls) {
   $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\">");
 }
 
+
 function setUpQuiz() {
   loadOptions();
   resetHTML(["progress","fieldset-mode"]);
@@ -227,4 +228,57 @@ function endGame() {
   }
   showCorrection();
   toggleElementsById(["submit"],true);
+}
+
+function changeGuess(len) {
+  var str = "";
+  for (var i = len - 1; i >= 0; i--) {
+    str += "_ ";
+  }
+  console.log(str);
+  $("div#quizz-holder").html("<span id=\"quizz-guess\">"+str+"</span>");
+}
+
+function newGuess(correction) {
+  var sleep = 2500;
+  tries++;
+  const answer = $("#answer").val();
+  updateGuess(normalizeStr(correction),normalizeStr(answer));
+  const correct = checkAnswer(answer,correction,0);
+  if (correct || tries >= 3) {
+    tries = 0;
+    countries.pop();
+    updateGuess(correction,correction);
+    if (correct) {
+      sleep = 500;
+      document.getElementById("answer").classList.add("correct");
+    } else {
+      document.getElementById("answer").classList.add("incorrect");
+    }
+    setProgress(correct,false);
+    setTimeout(function(){
+      if (countries.length != 0) {
+      next();  
+      } else {
+        endGame();
+      }
+    },sleep);
+  }
+  setAnswerField("","regularanswer");
+  $("#answer").focus();
+}
+
+function updateGuess(rep,guess) {
+  console.log(document.getElementById("quizz-guess").innerHTML);
+  guess += normalizeStr(document.getElementById("quizz-guess").innerHTML);
+  var res = "";
+  for (var i = 0; i < rep.length; i++) {
+    if (guess.includes(rep[i])) {
+      res += rep[i].toUpperCase();
+    } else {
+      res += "_";
+    }
+    res += " ";
+  }
+  document.getElementById("quizz-guess").innerHTML = res;
 }

@@ -95,15 +95,9 @@ var timerFunc;
 var blink = false;
 var small = false;
 var mode = 0;
+var tries = 0;
+var acceptableAnswer;
 
-
-function changeGuessCapital(num) {
-  var str = "";
-  for (var i = country_data[num].capital.length - 1; i >= 0; i--) {
-    str += "_ ";
-  }
-  $("div#quizz-holder").html("<span id=\"capital-guess\">"+str+"</span>");
-}
 
 
 function loadOptions(){
@@ -162,7 +156,7 @@ function next() {
       changeCountryFlag(countries[countries.length-1]);
       break;
     case 3:
-      changeGuessCapital(countries[countries.length-1]);
+      changeGuess(country_data[countries[countries.length-1]].capital.length);
       break;
     case 4:
       changeISO(countries[countries.length-1]);
@@ -174,11 +168,15 @@ function next() {
 
 
 function nextAnswer() {
-  document.getElementById("submit").disabled = true;
-  var country = countries.pop();
-  const correction = country_data[country].capital;
-  const resp = isCorrect(correction.normalize('NFKD'),2);
-  correctInput(resp,removeParentheses(correction),country);
+  if (mode != 3) {
+    document.getElementById("submit").disabled = true;
+    var country = countries.pop();
+    const correction = country_data[country].capital;
+    const resp = isCorrect(correction.normalize('NFKD'),2);
+    correctInput(resp,removeParentheses(correction),country);
+  } else {
+    newGuess(country_data[countries[countries.length-1]].capital);
+  }
 }
 
 function allowOptions() {

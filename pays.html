@@ -97,14 +97,6 @@ var small = false;
 var mode = 0;
 
 
-function changeGuessCountry(num) {
-  var str = "";
-  for (var i = country_data[num].name.length - 1; i >= 0; i--) {
-    str += "_ ";
-  }
-  $("div#quizz-holder").html("<span id=\"country-guess\">"+str+"</span>");
-}
-
 
 function loadOptions(){
   if (document.getElementById("radio-flag") != undefined) {
@@ -162,7 +154,7 @@ function next() {
       changeCapitalFlag(countries[countries.length-1]);
       break;
     case 3:
-      changeGuessCountry(countries[countries.length-1]);
+      changeGuess(country_data[countries[countries.length-1]].name.length);
       break;
     case 4:
       changeISO(countries[countries.length-1]);
