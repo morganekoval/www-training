@@ -1,3 +1,7 @@
+* {
+	box-sizing: border-box;
+}
+
 body {
 	/*background-color: white;*/
 	background-image: url("../resources/background.svg");
@@ -140,4 +144,24 @@ h2 {
 .spaced {
 	display: flex;
 	justify-content: space-between;
+}
+
+@media screen and (max-width: 800px) {
+	html {
+		height: 100%;
+	}
+	body {
+		width: 100%;
+		height: 100%;
+		padding: 8px;
+		margin: 0;
+	}
+	.body-quizz {
+		width: auto !important;
+		height: 100% !important;
+	}
+	#flag-img {
+		max-width: 100%;
+		object-fit: contain;
+	}
 }
