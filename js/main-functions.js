@@ -184,7 +184,7 @@ function correctInput(resp,correction,country) {
 }
 
 function setAnswerField(val,cls) {
-  $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\">");
+  $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\" autocomplete=\"off\">");
 }
 
 
