@@ -3,11 +3,12 @@
 }
 
 body {
-	/*background-color: white;*/
-	background-image: url("../resources/background.svg");
+	background-color: white;
+	/*background-image: url("../resources/background.svg");*/
 	color: black;
-	margin-left: auto;
-	width: 80vw;
+	/*margin-left: auto;*/
+	width: 100%;
+	/*height: 100%;*/
 	font-family: sans-serif;
 }
 
@@ -17,13 +18,16 @@ body {
 }
 
 h1 {
+	height: 50px;
+	z-index: 10;
 	font-weight: bold;
-	font-size: 35px;
+	font-size: 40px;
 	margin-bottom: 0px;
 	padding-bottom: 0px;
 }
 
-h2 {
+h2, .link-quizz {
+	font-weight: bold;
 	margin-top: 0px;
 	font-size: 20px;
 }
@@ -33,24 +37,26 @@ h2 {
 	color: black;
 }
 
-#homepage-link {
+.homepage-link-class {
 	text-decoration: none;
 	color: black;
 }
 
 .body-quizz {
-	background-color: rgba(255, 255, 255, 0.7);
+	/*background-color: rgba(255, 255, 255, 0.7);*/
+	/*min-width: 50vw;
 	width: 50vw;
-	height: 95vh;
+	max-width: 95vw;
+	height: 95vh;*/
 	padding: 15px;
-	overflow: scroll;
+	/*overflow: scroll;*/
 }
 
 #links {
-	display: flex;
-	flex-direction: column;
+	/*display: flex;*/
+	/*flex-direction: column;*/
 	/*justify-content: space-between;*/
-	/*align-content: center;*/
+	/*align-content: left;*/
 }
 
 .link-quizz a{
@@ -61,18 +67,32 @@ h2 {
 
 .link-quizz {
 	border: none;
-	padding: 5px;
+	/*padding: 5px;*/
 	background-color: rgba(0, 0, 0, 0);
 }
 
 .link-quizz a:hover {
+	/*left: 100%;*/
 	color: red;
 }
 
+fieldset {
+	padding: 10px;
+	border: 1px solid black;
+	margin-bottom: 15px;
+}
+
+legend {
+	padding: 3px;
+	padding-left: 5px;
+	border: 1px solid black;
+	margin: 0;
+}
 
 #progress {
-	background-color: grey;
-	width:  50vw;
+	border: 1px solid black;
+	background-color: white;
+	width:  100%;
 	height: 3vh;
 	margin-bottom: 3px;
 }
@@ -82,6 +102,7 @@ h2 {
 }
 
 #quizz-holder {
+	background-color: white;
 /*	display: flex;
 	justify-content: center;
 	flex-direction: column;*/
@@ -95,8 +116,8 @@ h2 {
 }
 
 #flag-img {
-	/*max-width: 65%;*/
-	height: 40vh;
+	max-width: 100%;
+	/*height: 40vh;*/
 }
 
 #flag-img-corr {
@@ -113,7 +134,9 @@ h2 {
 }
 
 #answer {
-	width: 43vw;
+	flex: 1;
+	/*min-width: 30vw;*/
+	/*width: 43vw;*/
 }
 #submit {
 	min-width: 5vw;
@@ -146,6 +169,7 @@ h2 {
 	justify-content: space-between;
 }
 
+/*<<<<<<< HEAD
 @media screen and (max-width: 800px) {
 	html {
 		height: 100%;
@@ -165,3 +189,320 @@ h2 {
 		object-fit: contain;
 	}
 }
+=======*/
+
+
+
+
+@keyframes fade {
+    0% {
+    	opacity: 0;
+        transform: scale(0);
+       
+    }
+}
+
+@keyframes shake {
+	0% {
+		transform: rotate(-20deg);
+	}
+	50% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(20deg);
+	}
+}
+
+@keyframes dot-anim {
+	0% {
+		left: 0%;
+	}
+    25% {
+        left: -25%;
+    }
+    50% {
+        left: 0%;
+    }
+    75% {
+    	left: 25%;
+    }
+    100% {
+        left: 0%;
+    }
+}
+
+
+@keyframes tighten {
+	0%{
+		margin-left: 25%;
+		margin-right: 25%;
+		width: 50%;
+	}
+	50% {
+		margin-left: 40%;
+		margin-right: 40%;
+		width: 20%;
+	}
+/*	75%{
+		margin-left: 25%;
+		margin-right: 25%;
+		width: 50%;
+	}*/
+}
+
+.container .radiob {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.container, #start-button {
+	z-index: -1;
+    width: 100%;
+    /*height: 100%;*/
+    animation:  fade 0.5s;
+    /*animation: shake 0.2s;*/
+}
+
+#start-button:hover {
+	animation: tighten 1s;
+}
+
+#start-button button:hover {
+	background-color: orange;
+}
+
+.shaked {
+	color: red;
+	animation-name: shake;
+	animation-duration: 0.2s;
+	animation-iteration-count: 5;
+}
+
+
+#fieldset-mode {
+	text-align: center;
+}
+
+#quizz-holder legend {
+	text-align: center;
+}
+
+.label-container {
+	font-weight: initial;
+	display: block;
+	position: relative;
+	/*padding-left: 35px;*/
+	margin-bottom: 12px;
+	cursor: pointer;
+	/*font-size: 22px;*/
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	transition: all .2s ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-name: dot-anim;
+}
+
+.container:hover .label-container {
+	animation-duration: 1s;
+}
+
+.anim-item2 {
+	animation-delay: 0.4s;
+}
+
+.anim-item3 {
+	animation-delay: 0.8s;
+}
+
+.anim-item4 {
+	animation-delay: 1.2s;
+}
+
+.anim-item5 {
+	animation-delay: 1.6s;
+}
+
+
+.label-container:has(> input:checked) {
+	animation-play-state: paused;
+	font-weight: bold;
+	color: orange;
+	z-index: 0;
+	/*font-size: 50px;*/
+}
+
+/* Create a custom radio button */
+.checkmark {
+/*  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border-radius: 50%;*/
+}
+
+/* On mouse-over, add a grey background color */
+.label-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.label-container input:checked ~ .checkmark {
+	animation-play-state: paused;
+  	background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.label-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.label-container .checkmark:after {
+/* 	top: 5px;
+	left: 5px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: white;*/
+}
+
+.slider-holder {
+	display: inline-flex;
+	align-items: baseline;
+	width: 94%;
+	/*width: 2000px;*/
+}
+
+/*.slider-holder span{
+}*/
+
+.ui-slider {
+	flex: 1;
+	width: 50%;
+	left: 3%;
+	background-color: white;
+	border: none !important;
+	/*outline: none !important;*/
+}
+
+.ui-slider-handle {
+	text-align: center !important;
+	width: 8% !important;
+	border: none !important;
+	background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.ui-state-focus, .ui-state-active, .ui-state-hover {
+	border:  none !important;
+	outline: none !important;
+	color: black !important;
+}
+
+.ui-slider-range {
+	/*padding-left: 10px;*/
+	background-color: orange;
+	/*background: linear-gradient(to left,#e66465, 70%, #9198e5);*/
+}
+
+#invisible-opts {
+	display: inline-block;
+}
+
+
+.button-holder {
+	display: flex;
+	justify-self: center;
+	/*justify-content: center;*/
+	/*justify-items: center;*/
+	width: 100%;
+}
+
+button {
+	flex: 1;
+	background-color: white;
+	border: 1px solid black;
+}
+
+#submit {
+	right: 0;
+	background-color: white;
+	border: 1px solid black;
+}
+
+@keyframes wtf {
+	0% {
+		transform: translate(0,-20px);
+	}
+	50% {
+		transform: translate(0,20px);
+	}
+	/*75% {
+		transform: translate(100px) scale(4);
+	}*/
+	100% {
+		transform: translate(0,-20px);
+	}
+}
+
+/*.header:has(h1 a:hover) {
+	margin: 0 !important;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: black;
+}*/
+
+/*h1:hover {
+	animation-name: wtf;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+}*/
+
+
+#inputs {
+	width: 100%;
+	align-items: baseline;
+	/*justify-content: space-between;*/
+	/*display: inline-flex;*/
+	/*visibility: hidden;*/
+}
+
+#answer-holder {
+	width: 100%;
+}
+
+#answer-holder input {
+	width: 100%;
+	border: 1px solid black;
+}
+
+#answer-holder input:focus {
+	outline: none;
+}
+
+#h1-title {
+	width: 100%;
+}
+
+
+
+
+/*>>>>>>> a4ea22a (un peu le bordel mais bon)*/

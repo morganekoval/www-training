@@ -1,3 +1,76 @@
+let sleeptime = 2000;
+
+
+$( function() {
+    var handle = $( "#numberquiz" );
+    $( "#slider1" ).slider({
+      value:10,
+      min:1,
+      max:198,
+      animate:true,
+      range:"min",
+      create: function() {
+        handle.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        // console.log(document.getElementById("slider1").getBoundingClientRect());
+        handle.text( ui.value );
+        // console.log(ui);
+  
+    }
+  });
+});
+
+
+$( function() {
+    var handle = $( "#minutesquiz" );
+    $( "#slider2" ).slider({
+      value:10,
+      min:0,
+      max:60,
+      animate:true,
+      range:"min",
+      create: function() {
+        handle.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        // console.log(document.getElementById("slider1").getBoundingClientRect());
+        handle.text( ui.value );
+        if (ui.value <1) {
+          handle.text("X")
+        }
+        // handle.text( ui.value );
+        // console.log(ui);
+  
+    }
+  });
+});
+
+
+function maybeShake() {
+  const cntnr = document.getElementById("quizz-holder");
+  if (document.querySelector('input[name="mode"]:checked').value == "flags" & document.getElementById("blink") != undefined & document.getElementById("blink").checked & document.getElementById("small").checked) {
+    cntnr.style.color = "red";
+    cntnr.style.animationName = "shake";
+    cntnr.style.animationDuration = "0.2s";
+    cntnr.style.animationIterationCount = "3";
+    // document.getElementById("quizz-holder").classList.add("shaked");
+  } else {
+    document.getElementById("quizz-holder").style.color = "black";
+    cntnr.style.animationIterationCount = "0";
+    cntnr.style.animationName = "";
+
+  } 
+
+  if (document.querySelector('input[name="mode"]:checked').value != "flags") {
+    document.getElementById("blink").checked = false;
+    document.getElementById("small").checked = false;
+  }
+  
+  
+}
+
+
 function randomOrder() {
   var num_tab = [];
   for (var i = 0; i < country_data.length; i++) {
@@ -50,6 +123,12 @@ function toggleElementsById(elements,hidden) {
   });
 }
 
+function toggleElementsByIdDisplay(elements,display) {
+  elements.forEach(function(element){
+    document.getElementById(element).style.display = display;
+  });
+}
+
 function resetHTML(elements) {
   elements.forEach(function(element){
     document.getElementById(element).innerHTML = "";
@@ -57,13 +136,18 @@ function resetHTML(elements) {
 }
 
 function getQuizInfo(input,min,max) {
-  var input_number = document.getElementById(input).value;
-  if (input_number == undefined || input_number < min) {
-    input_number = min;
-  } else if (input_number > max) {
-    input_number = max;
+  var input_number = $(`#${input}`).slider("value");
+  if (input_number < 1) {
+    return min;
   }
   return input_number;
+  // // var input_number = document.getElementById(input).slider("option", "value");
+  // if (input_number == undefined || input_number < min) {
+  //   input_number = min;
+  // } else if (input_number > max) {
+  //   input_number = max;
+  // }
+  // return input_number;
 }
 
 
@@ -102,14 +186,15 @@ function normalizeStr(str) {
 }
 
 function setProgress(correct,callFromInterval) {
+  const width = document.getElementById("progress").getBoundingClientRect().width;
   if (timer == 0) {
     if (correct) {
-      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/quiz_length+"vw;height: 3vh;margin-bottom: 3px;\"></div>"
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+width/quiz_length+"px;height: 3vh;margin-bottom: 3px;\"></div>"
     } else {
-      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+50/quiz_length+"vw;height: 3vh;margin-bottom: 3px;\"></div>"
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+width/quiz_length+"px;height: 3vh;margin-bottom: 3px;\"></div>"
     }
   } else if (callFromInterval) {
-    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+50/(timer/1000)+"vw;height: 3vh;margin-bottom: 3px;\"></div>"
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+width/(timer/1000)+"px;height: 3vh;margin-bottom: 3px;\"></div>"
   }
 }
 
@@ -157,8 +242,8 @@ function changeISO(num) {
 }
 
 function correctInput(resp,correction,country) {
-  var cls;
-  var sleeptime = 2000;
+  let cls;
+  // let sleeptime = 2000;
   if (resp) {
     score +=1;
     cls = "correct";
@@ -184,17 +269,19 @@ function correctInput(resp,correction,country) {
 }
 
 function setAnswerField(val,cls) {
-  $("span#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\" autocomplete=\"off\">");
+  $("div#answer-holder").html("<input type=\"text\" id=\"answer\" name=\"answer\" minlength=\"0\" maxlength=\"35\" size=\"35\" value=\""+val+"\" class=\""+cls+"\" autocomplete=\"off\">");
 }
 
 
 function setUpQuiz() {
   loadOptions();
-  resetHTML(["progress","fieldset-mode"]);
+  resetHTML(["progress","fieldset-mode","start-button"]);
   score = 0;
   incorrect_countries = [];
   incorrect_log = [];
+  // toggleElementsById(["start-button"],true);
   toggleElementsById(["inputs","submit","progress"],false);
+  toggleElementsByIdDisplay(["inputs"],"inline-flex");
   setAnswerField("","regularanswer");
   next();
   $("#answer").focus();
@@ -214,9 +301,18 @@ function startQuizTimer() {
 }
 
 function startQuiz() {
-  quiz_length = getQuizInfo("numberquiz",1,country_data.length);
+  quiz_length = getQuizInfo("slider1",0,country_data.length);
+  timer = getQuizInfo("slider2",0,60)*1000*60;
   countries = randomOrder().slice(0,quiz_length);
   setUpQuiz();
+  if (timer > 0) {
+    timerFunc = setInterval(function(){
+      setProgress(0,true);
+      if (Date.now() - elapsed_time > timer) {
+        endGame();
+      }
+    },1000);
+  }
 }
 
 function endGame() {

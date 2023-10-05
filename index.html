@@ -6,22 +6,27 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>wwww-training</title>
   <!-- Loads all styles -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="style/main.css">
   <link rel="icon" href="resources/icon.png">
 
   <!-- Loads all libraries -->
-  <script src="lib/jquery-3.3.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   <script src="resources/country-data.js"></script>
   <script src="js/main-functions.js"></script>
 </head>
 <body>
 
-  <div class="body-quizz">
-    <h1><a id="homepage-link">www-training</a></h1>
-    <div id="links">
-      <button class="link-quizz" type="button"><a href="capitales.html">capitales</a></button>
-      <button class="link-quizz" type="button"><a href="pays.html">pays</a></button>
-    </div>
+  <div class="col-md-5 col-md-offset-3  col-xs-10 col-xs-offset-1 body-quizz" id="quizz">
+    <div class="header">
+    <h1><a id="h1-title" class="homepage-link-class">www-training</a></h1>
+    <h2><a id="homepage-link" class="homepage-link-class">Menu</a></h2>
+  </div>
+    <nav id="links">
+      <button class="link-quizz" type="button"><a href="capitales.html">> Capitales</a></button></br>
+      <button class="link-quizz" type="button"><a href="pays.html">> Pays</a></button>
+    </nav>
 
 
   </div>

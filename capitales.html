@@ -6,76 +6,113 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>wwww-training</title>
   <!-- Loads all styles -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="style/main.css">
   <link rel="icon" href="resources/icon.png">
 
   <!-- Loads all libraries -->
-  <script src="lib/jquery-3.3.1.min.js"></script>
+  <!-- <script src="lib/jquery-3.3.1.min.js"></script> -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
   <script src="resources/country-data.js"></script>
   <script src="js/main-functions.js"></script>
 </head>
 <body>
 
-  <div class="body-quizz" id="quizz">
+  <div class="col-md-5 col-md-offset-3  col-xs-10 col-xs-offset-1 body-quizz" id="quizz">
   <div class="header">
-    <h1><a id="homepage-link">www-training</a></h1>
-    <h2>> <a id="current-link">Capitales</a></h2>
+    <h1><span id="h1-span"><a id="h1-title" class="homepage-link-class">www-training</a></span></h1>
+    <h2><a id="homepage-link" class="homepage-link-class">Menu</a> > <a class="link-quizz" id="current-link">Capitales</a></h2>
   </div>
     <div id="progress" hidden><!-- <div id="inside-progress"></div><div id="inside-progress2"></div> --></div>
-    <div id="fieldset-mode">
+    <div class="container" id="fieldset-mode">
     <fieldset>
     <legend>Mode de jeu</legend>
 
     <div>
-      <input type="radio" id="radio-flag" name="mode" value="flags"
+      <label class="label-container anim-item1">Drapeaux
+        <input class="radiob" type="radio" id="radio-flag" name="mode" value="flags"
              onclick="allowOptions()" checked>
-      <label for="flags">Drapeaux</label>
+             <span class="checkmark"></span></label>
+      
+      
     </div>
 
     <div>
-      <input type="radio" id="radio-country" name="mode" value="countries"onclick="allowOptions()">
-      <label for="countries">Pays</label>
+      <label class="label-container anim-item2">Pays
+        <input class="radiob" type="radio" id="radio-country" name="mode" value="countries"onclick="allowOptions()">
+      <span class="checkmark"></span></label>
+      
     </div>
 
     <div>
-      <input type="radio" id="radio-countryflags" name="mode" value="countriesflags" onclick="allowOptions()">
-      <label for="countriesflags">Pays et drapeaux</label>
+      <label class="label-container anim-item3">Pays et drapeaux
+      <input class="radiob" type="radio" id="radio-countryflags" name="mode" value="countriesflags" onclick="allowOptions()">
+      <span class="checkmark"></span></label>
+      
     </div>
 
     <div>
-      <input type="radio" id="radio-guess" name="mode" value="guesses" onclick="allowOptions()">
-      <label for="guesses">Nombre de lettres</label>
+      <label class="label-container anim-item4">Nombre de lettres
+      <input class="radiob" type="radio" id="radio-guess" name="mode" value="guesses" onclick="allowOptions()">
+      <span class="checkmark"></span></label>
     </div>
 
     <div>
-      <input type="radio" id="radio-iso" name="mode" value="iso" onclick="allowOptions()">
-      <label for="iso">Code ISO</label>
+      <label class="label-container anim-item5">Code ISO
+      <input class="radiob" type="radio" id="radio-iso" name="mode" value="iso" onclick="allowOptions()">
+      <span class="checkmark"></span></label>
     </div>
 
 
 </fieldset>
 </div>
 
-    <div id="quizz-holder">
+    
+    <div class="container" id="quizz-holder">
+      <fieldset>
+        <legend>Paramètres de jeu</legend>
       <div>
-        <span class="dis-option"><input type="checkbox" id="blink" name="blink"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
-        <span class="dis-option"><input type="checkbox" id="small" name="small"> Les drapeaux sont petits</span><br/>
-      <span>Nombre de capitales : </span>
-      <input id="numberquiz" type="number" value="10">
-      <button onclick="startQuiz()">Commencer</button>
+      <div class="slider-holder">
+        <span>Nombre de capitales : </span>
+        <div id="slider1">
+          <div id="numberquiz" class="ui-slider-handle"></div>
+      </div>
     </div>
-    <div>
-      <span>Minuteur : </span>
-      <input id="minutesquiz" type="number" value="1"> min
-      <button onclick="startQuizTimer()">Commencer</button>
+      <!-- <input id="numberquiz" type="number" value="10"> -->
+      <!-- <button onclick="startQuiz()">Commencer</button> -->
     </div>
+    <div class="slider-holder">
+      <span>Minuteur (min) : </span><span></span>
+      <div id="slider2">
+          <div id="minutesquiz" class="ui-slider-handle"></div>
+      </div>
+      <!--< input id="minutesquiz" type="number" value="1"> min
+      <button onclick="startQuizTimer()">Commencer</button> -->
     </div>
+    <div id="invisible-opts">
+      <span class="dis-option"><input type="checkbox" id="blink" name="blink" onclick="maybeShake()"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
+        <span class="dis-option"><input type="checkbox" id="small" name="small" onclick="maybeShake()"> Les drapeaux sont petits</span><br/>
+    </div>
+
+</fieldset>
+    </div>
+    
+    <div class="button-holder" id="start-button">
+        <button onclick="startQuiz()">Commencer</button>
+      </div>
     <form id="inputs" hidden>
-      <span id="answer-holder">
+
+      <div id="answer-holder">
         <input type="text" id="answer" name="answer" minlength="0" maxlength="35" class="regularanswer">
-     </span>
+     </div>
+     <div>
        <input id="submit" type="submit" value="Valider">
+     </div>
     </form>
+
+
   </div>
 
 
@@ -84,25 +121,26 @@
 
 <script type="text/javascript">
 
-var score = 0;
-var quiz_length = 198;
-var countries = [];
-var incorrect_countries = [];
-var incorrect_log = [];
-var elapsed_time = 0;
-var timer = 0;
-var timerFunc;
-var blink = false;
-var small = false;
-var mode = 0;
-var tries = 0;
-var acceptableAnswer;
+let score = 0;
+let quiz_length = 198;
+let countries = [];
+let incorrect_countries = [];
+let incorrect_log = [];
+let elapsed_time = 0;
+let timer = 0;
+let timerFunc;
+let blink = false;
+let small = false;
+let mode = 0;
+let tries = 0;
+let acceptableAnswer;
+let moving_title = false;
 
 
 
 function loadOptions(){
   if (document.getElementById("radio-flag") != undefined) {
-    var modeSelected = document.querySelector('input[name="mode"]:checked').value;
+    let modeSelected = document.querySelector('input[name="mode"]:checked').value;
     switch(modeSelected) {
       case 'flags' :
         mode = 0; 
@@ -139,7 +177,7 @@ function showCorrection() {
   console.log(incorrect_log);
   incorrect_log = incorrect_log.reverse();
   incorrect_countries.forEach(function(country){
-    var country_info = country_data[country];
+    let country_info = country_data[country];
     document.getElementById("answer-holder").innerHTML += "<div class=\"spaced\"><span><img id=\"flag-img-corr\" src=\""+country_info.imgurl+"\" alt=\""+country_info.filename+"\"></span> <span class=\"incorrect strikethrough\">"+incorrect_log.pop()+"</span> <span class=\"correct\">"+ removeParentheses(country_info.capital)+"</span> <span class=\"indication\"> ("+country_info.name+")</span></div>";
   });
 }
@@ -170,7 +208,7 @@ function next() {
 function nextAnswer() {
   if (mode != 3) {
     document.getElementById("submit").disabled = true;
-    var country = countries.pop();
+    let country = countries.pop();
     const correction = country_data[country].capital;
     const resp = isCorrect(correction.normalize('NFKD'),2);
     correctInput(resp,removeParentheses(correction),country);
@@ -180,15 +218,22 @@ function nextAnswer() {
 }
 
 function allowOptions() {
-  var res = document.getElementsByClassName("dis-option");
-  var b = true;
+  maybeShake();
+  let res = document.getElementById("invisible-opts");
+  let b = 'none';
   if (document.querySelector('input[name="mode"]:checked').value == "flags") {
-    b = false;
+    console.log("yes");
+    b = 'inline-block';
   }
-  for (var i = res.length - 1; i >= 0; i--) {
-    res[i].hidden = b;
-  }
+  res.style.display = b;
+  // for (let i = res.length - 1; i >= 0; i--) {
+  //   // res[i].hidden = b;
+  //   res[i].style.display = b;
+  //   console.log("ok");
+  // }
 }
+
+
 
 
 inputs.addEventListener("submit", function (e) {
@@ -196,17 +241,55 @@ inputs.addEventListener("submit", function (e) {
   nextAnswer();
 });
 
+
+document.getElementById("h1-title").addEventListener("mouseover", function (e) {
+  moving_title = true;
+});
+
+
+document.addEventListener("mousemove", function(e) {
+  if (moving_title) {
+    const title = document.getElementById("h1-span");
+    title.display = "inline-block";
+    title.style.position = "absolute";
+    title.style.top = `${e.pageY}px`;
+    if (e.pageX-title.getBoundingClientRect().width*2 > window.innerWidth) {
+      title.style.right = `${0+title.getBoundingClientRect().width}`;
+    } else {
+       title.style.left = `${e.pageX-title.getBoundingClientRect().width*2}px`;
+    }
+   
+
+    console.log(e);
+  }
+});
+
+document.addEventListener("mouseup", function(e) {
+  moving_title = false;
+});
+
+
 $(window).on('load', function () {
   // console.log(document.URL);
-  var index = "";
+  let index = "";
   if (document.URL.includes("Users") || document.URL.includes("Utilisateurs")) {
     index = "index.html";
   }
+
   document.getElementById("homepage-link").href = document.URL.replace("capitales.html",index);
+  // const hmp = document.getElementsByClassName("homepage-link");
+  // for (let i = 0 ; i < hmp.length ; i++) {
+  //   hmp[i].href = document.URL.replace("capitales.html",index);
+  // }  
+   
   document.getElementById("current-link").href = document.URL;
-  
+
+
+
+
 
 });
+
 
 
 
