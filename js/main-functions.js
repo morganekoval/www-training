@@ -186,15 +186,16 @@ function normalizeStr(str) {
 }
 
 function setProgress(correct,callFromInterval) {
-  const width = document.getElementById("progress").getBoundingClientRect().width;
+  const width = document.getElementById("progress").getBoundingClientRect().width-1.5;
+  const height = document.getElementById("progress").getBoundingClientRect().height-1;
   if (timer == 0) {
     if (correct) {
-      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+width/quiz_length+"px;height: 3vh;margin-bottom: 3px;\"></div>"
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+width/quiz_length+`px;height: ${height}px;margin-bottom: 3px";></div>`;
     } else {
-      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+width/quiz_length+"px;height: 3vh;margin-bottom: 3px;\"></div>"
+      document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: red;width: "+width/quiz_length+`px;height: ${height}px;margin-bottom: 3px";></div>`;
     }
   } else if (callFromInterval) {
-    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+width/(timer/1000)+"px;height: 3vh;margin-bottom: 3px;\"></div>"
+    document.getElementById("progress").innerHTML = document.getElementById("progress").innerHTML+ "<div style=\"display: inline-block;background-color: green;width: "+width/(timer/1000)+`px;height: ${height}px;margin-bottom: 3px";></div>`;
   }
 }
 
