@@ -316,6 +316,7 @@ function setUpQuiz() {
   incorrect_log = [];
   // toggleElementsById(["start-button"],true);
   toggleElementsById(["inputs","submit","progress"],false);
+  toggleElementsByIdDisplay(["anims-preferences"],"none");
   toggleElementsByIdDisplay(["inputs"],"inline-flex");
   setAnswerField("","regularanswer");
   next();
