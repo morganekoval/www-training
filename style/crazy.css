@@ -1,0 +1,19 @@
+* {
+	animation-play-state: initial;
+}
+
+#start-button:hover {
+	animation: tighten 1s;
+}
+
+.container, #start-button {
+    animation:  fade 0.5s;
+}
+
+.label-container{
+	transition: all .2s ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+    animation-name: dot-anim;
+}

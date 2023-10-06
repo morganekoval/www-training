@@ -1,0 +1,18 @@
+* {
+	animation-play-state: paused;
+}
+
+
+
+#start-button:hover {
+	animation: none;
+}
+
+.container, #start-button {
+    animation:  none;
+}
+
+
+.label-container{
+    animation-iteration-count: 1;
+}

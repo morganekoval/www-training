@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="style/main.css">
+  <link rel="stylesheet" href="style/crazy.css" id="animation-style">
   <link rel="icon" href="resources/icon.png">
 
   <!-- Loads all libraries -->
@@ -99,6 +100,10 @@
 </fieldset>
     </div>
     
+
+    <div class="container inline-anims-select">
+      <div class="anim-pref" id="liked" onclick="enableAnims()"> J'adore les animations !!</div><div class="anim-disliked" id="disliked" onclick="disableAnims()">Non, ça me saoule...</div>
+    </div>
     <div class="button-holder" id="start-button">
         <button onclick="startQuiz()">Commencer</button>
       </div>
@@ -134,7 +139,6 @@ let small = false;
 let mode = 0;
 let tries = 0;
 let acceptableAnswer;
-let moving_title = false;
 
 
 
@@ -248,7 +252,7 @@ document.getElementById("h1-title").addEventListener("mouseover", function (e) {
 
 
 document.addEventListener("mousemove", function(e) {
-  if (moving_title) {
+  if (moving_title & allowed_anim) {
     const title = document.getElementById("h1-span");
     title.display = "inline-block";
     title.style.position = "absolute";

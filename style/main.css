@@ -263,24 +263,54 @@ legend {
 	z-index: -1;
     width: 100%;
     /*height: 100%;*/
-    animation:  fade 0.5s;
+    /*animation:  fade 0.5s;*/
     /*animation: shake 0.2s;*/
 }
 
-#start-button:hover {
-	animation: tighten 1s;
+.inline-anims-select {
+	margin-bottom: 15px;
+	display: inline-flex;
+	justify-items: space-between;
 }
+
+.inline-anims-select div {
+	text-align: center;
+	width: 50%;
+	flex: 1;
+}
+
+.anim-disliked:hover {
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.anim-pref#liked {
+	color: green;
+}
+
+.anim-pref#disliked {
+	color: red;
+}
+
+.anim-disliked {
+	color: gray;
+
+}
+
+/*#start-button:hover {
+	animation: tighten 1s;
+}*/
 
 #start-button button:hover {
 	background-color: orange;
 }
 
-.shaked {
+/*.shaked {
 	color: red;
 	animation-name: shake;
 	animation-duration: 0.2s;
 	animation-iteration-count: 5;
-}
+}*/
 
 
 #fieldset-mode {
@@ -303,11 +333,6 @@ legend {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	transition: all .2s ease-in-out;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    animation-duration: 2s;
-    animation-name: dot-anim;
 }
 
 .container:hover .label-container {

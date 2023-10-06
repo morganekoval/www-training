@@ -1,5 +1,6 @@
 let sleeptime = 2000;
-
+let moving_title = false;
+let allowed_anim = true;
 
 $( function() {
     var handle = $( "#numberquiz" );
@@ -46,15 +47,48 @@ $( function() {
   });
 });
 
+function disableAnims() {
+  allowed_anim = false;
+
+  document.getElementById("animation-style").href = "style/calm.css";
+
+  const liked = document.getElementById("liked");
+  const disliked = document.getElementById("disliked");
+
+  liked.classList.remove("anim-pref");
+  liked.classList.add("anim-disliked");
+
+  disliked.classList.add("anim-pref");
+  disliked.classList.remove("anim-disliked");
+
+}
+
+function enableAnims() {
+  allowed_anim = true;
+
+  document.getElementById("animation-style").href = "style/crazy.css";
+
+  const liked = document.getElementById("liked");
+  const disliked = document.getElementById("disliked");
+
+  liked.classList.add("anim-pref");
+  liked.classList.remove("anim-disliked");
+
+  disliked.classList.remove("anim-pref");
+  disliked.classList.add("anim-disliked");
+
+}
+
 
 function maybeShake() {
   const cntnr = document.getElementById("quizz-holder");
   if (document.querySelector('input[name="mode"]:checked').value == "flags" & document.getElementById("blink") != undefined & document.getElementById("blink").checked & document.getElementById("small").checked) {
     cntnr.style.color = "red";
-    cntnr.style.animationName = "shake";
-    cntnr.style.animationDuration = "0.2s";
-    cntnr.style.animationIterationCount = "3";
-    // document.getElementById("quizz-holder").classList.add("shaked");
+    if (allowed_anim) {
+      cntnr.style.animationName = "shake";
+      cntnr.style.animationDuration = "0.2s";
+      cntnr.style.animationIterationCount = "3";
+    }
   } else {
     document.getElementById("quizz-holder").style.color = "black";
     cntnr.style.animationIterationCount = "0";
