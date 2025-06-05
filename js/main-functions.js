@@ -354,9 +354,12 @@ function startQuiz() {
 function endGame() {
   clearInterval(timerFunc);
   if (timer == 0) {
-    $("#quizz-holder").html("<div>Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button></div>");
+    // $("#quizz-holder").html("<div>Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div><div><input id=\"numberquiz\" type=\"number\" value=\""+quiz_length+"\"><button onclick=\"startQuiz()\">Recommencer</button></div>");
+    $("#quizz-holder").html("<div>Score : "+score+"/"+quiz_length+" en "+elapsedTimeMinutes(Date.now()-elapsed_time)+"</div>");
   } else {
-    $("#quizz-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(Math.min(timer,Date.now()-elapsed_time))+"</div><div><input id=\"minutesquiz\" type=\"number\" value=\""+timer/60000+"\"> min <button onclick=\"startQuizTimer()\">Recommencer</button></div>");
+    // $("#quizz-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(Math.min(timer,Date.now()-elapsed_time))+"</div><div><input id=\"minutesquiz\" type=\"number\" value=\""+timer/60000+"\"> min <button onclick=\"startQuizTimer()\">Recommencer</button></div>");
+    $("#quizz-holder").html("<div>Score : "+score+"/"+(score+incorrect_log.length)+" en "+elapsedTimeMinutes(Math.min(timer,Date.now()-elapsed_time))+"</div>");
+ 
   }
   showCorrection();
   toggleElementsById(["submit"],true);
