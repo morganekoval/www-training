@@ -99,6 +99,7 @@ function maybeShake() {
   if (document.querySelector('input[name="mode"]:checked').value != "flags") {
     document.getElementById("blink").checked = false;
     document.getElementById("small").checked = false;
+    document.getElementById("upsidedown").checked = false;
   }
   
   

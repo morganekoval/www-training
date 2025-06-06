@@ -95,6 +95,7 @@
     <div id="invisible-opts">
       <span class="dis-option"><input type="checkbox" id="blink" name="blink" onclick="maybeShake()"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
         <span class="dis-option"><input type="checkbox" id="small" name="small" onclick="maybeShake()"> Les drapeaux sont petits</span><br/>
+        <span class="dis-option"><input type="checkbox" id="upsidedown" name="upsidedown" onclick="maybeShake()"> Les drapeaux sont à l'envers</span><br/>
     </div>
 
 </fieldset>
@@ -136,6 +137,7 @@ let timer = 0;
 let timerFunc;
 let blink = false;
 let small = false;
+let upsidedown = false;
 let mode = 0;
 let tries = 0;
 let acceptableAnswer;
@@ -149,10 +151,18 @@ function loadOptions(){
       case 'flags' :
         mode = 0; 
         if (document.getElementById("blink") != undefined) {
-        blink = document.getElementById("blink").checked;
+          blink = document.getElementById("blink").checked;
         }
         if (document.getElementById("small") != undefined) {
           small = document.getElementById("small").checked;
+        }
+        if (document.getElementById("upsidedown") != undefined) {
+          upsidedown = document.getElementById("upsidedown").checked;
+        }
+        if (upsidedown) {
+          document.getElementById("quizz-holder").classList.add("upsidedown");
+        } else {
+          document.getElementById("quizz-holder").classList.remove("upsidedown");
         }
         break;
       case 'countries' :

@@ -527,6 +527,11 @@ button {
 	width: 100%;
 }
 
+.upsidedown img{
+	-webkit-transform: rotate(180deg);
+ 	transform: rotate(180deg);
+}
+
 
 
 
