@@ -96,6 +96,7 @@
       <span class="dis-option"><input type="checkbox" id="blink" name="blink" onclick="maybeShake()"> Les drapeaux n'apparaissent qu'un dixième de seconde</span><br/>
         <span class="dis-option"><input type="checkbox" id="small" name="small" onclick="maybeShake()"> Les drapeaux sont petits</span><br/>
         <span class="dis-option"><input type="checkbox" id="upsidedown" name="upsidedown" onclick="maybeShake()"> Les drapeaux sont à l'envers</span><br/>
+        <span class="dis-option"><input type="checkbox" id="direct" name="direct" onclick="maybeShake()"> Les drapeaux apparaissent tous à la suite</span><br/>
     </div>
 
 </fieldset>
@@ -138,9 +139,12 @@ let timerFunc;
 let blink = false;
 let small = false;
 let upsidedown = false;
+let direct = false;
+let accepted_answers = [];
 let mode = 0;
 let tries = 0;
 let acceptableAnswer;
+let lastGoodAnswer;
 
 
 
@@ -163,6 +167,9 @@ function loadOptions(){
           document.getElementById("quizz-holder").classList.add("upsidedown");
         } else {
           document.getElementById("quizz-holder").classList.remove("upsidedown");
+        }
+        if (document.getElementById("direct") != undefined) {
+          direct = document.getElementById("direct").checked;
         }
         break;
       case 'countries' :
@@ -222,10 +229,21 @@ function next() {
 function nextAnswer() {
   if (mode != 3) {
     document.getElementById("submit").disabled = true;
-    let country = countries.pop();
-    const correction = country_data[country].capital;
-    const resp = isCorrect(correction.normalize('NFKD'),2);
-    correctInput(resp,removeParentheses(correction),country);
+    if (direct) {
+      const correction = []
+      for (var i = 0 ; i < accepted_answers.length ; i++) {
+        const tmp = country_data[accepted_answers[i]].capital;
+        correction.push(tmp.normalize('NFKD'));
+      }
+      console.log(correction);
+      const resp = isCorrect(correction,2);
+      correctInput(resp,correction,"X");
+    } else {
+      let country = countries.pop();
+      const correction = country_data[country].capital;
+      const resp = isCorrect(correction.normalize('NFKD'),2);
+      correctInput(resp,removeParentheses(correction),country);
+    }
   } else {
     newGuess(country_data[countries[countries.length-1]].capital);
   }

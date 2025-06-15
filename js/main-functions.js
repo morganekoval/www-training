@@ -2,6 +2,8 @@ let sleeptime = 2000;
 let moving_title = false;
 let allowed_anim = true;
 
+
+
 $( function() {
     var handle = $( "#numberquiz" );
     $( "#slider1" ).slider({
@@ -196,6 +198,33 @@ function checkAnswer(answer,correction,threshold) {
 }
 
 function isCorrect(correction,threshold) {
+  var isCorrectVar = false;
+  if (direct) {
+    for(var i = 0 ; i < correction.length ; i++) {
+      console.log(`${$("#answer").val()} vs ${correction[i]}`);
+      if (correction[i].includes("(")) {
+        const correction2 = removeBetweenParentheses(correction[i]);
+        correction[i] = removeParentheses(correction[i]);
+        isCorrectVar = (checkAnswer($("#answer").val(),correction[i],threshold) || checkAnswer($("#answer").val(),correction2,threshold));
+      } else {
+        isCorrectVar = checkAnswer($("#answer").val(),correction[i],threshold)
+      }
+      if (isCorrectVar) {
+        var tmp = [];
+        for (var j = 0 ; j < accepted_answers.length ; j++) {
+          if (j != i) {
+            tmp.push(accepted_answers[j]);
+          }
+        }
+        accepted_answers = tmp;
+        lastGoodAnswer = correction[i];
+        // console.log(correction[i]);
+        // accepted_answers = accepted_answers.filter((code) => country_data[code].capital != correction[i] || country_data[code].name != correction[i]);
+        return true;
+      }
+    }
+    return false;
+  }
   // console.log(correction);
   if (correction.includes("(")) {
     const correction2 = removeBetweenParentheses(correction);
@@ -279,6 +308,7 @@ function changeISO(num) {
 
 function correctInput(resp,correction,country) {
   let cls;
+  tries++;
   // let sleeptime = 2000;
   if (resp) {
     score +=1;
@@ -291,10 +321,21 @@ function correctInput(resp,correction,country) {
     incorrect_log.push($("#answer").val());
     incorrect_countries.push(country);
   }
-  setAnswerField(correction,cls);
+  if (direct && !resp) {
+    setAnswerField("X","incorrect");
+  } else {
+    if (direct) {
+      setAnswerField(lastGoodAnswer,cls);
+    } else {
+      setAnswerField(correction,cls);
+    }
+  }
   setTimeout(function(){
-    if (countries.length != 0) {
-      next();
+    if (countries.length != 0 || (direct && tries < quiz_length)) {
+      if (!direct) {
+        next();
+      }
+      // next();
       setAnswerField("","regularanswer");
       $("#answer").focus();
     } else {
@@ -320,7 +361,26 @@ function setUpQuiz() {
   toggleElementsByIdDisplay(["anims-preferences"],"none");
   toggleElementsByIdDisplay(["inputs"],"inline-flex");
   setAnswerField("","regularanswer");
+
+  if (direct) {
+    for (var i = 0 ; i < countries.length ; i++) {
+      console.log(i);
+      accepted_answers.push(countries[i]);
+    }
+  }
+
   next();
+  if (direct) {
+    countries.pop();
+    var wait = 1;
+    for (var i = countries.length ; i>0 ; i--) {
+      setTimeout(function(){
+        next();
+        countries.pop();
+      },400*wait);
+      wait++;
+    }
+  }
   $("#answer").focus();
   elapsed_time = Date.now();
 }
